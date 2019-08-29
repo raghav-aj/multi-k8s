@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  # higher level config
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    # how the nginx behaves
+    nginx.ingress.kubernetes.io/rewrite-target: /$1  # to remove the /
+spec:
+  rules:
+    - http:
+        paths:  # to route the traffic to client(/) and server(/api/)
+          # for client
+          - path: /?(.*)
+            backend:
+              # from client-cluster-ip-service.yaml
+              serviceName: client-cluster-ip-service
+              servicePort: 3000
+          # for server
+          - path: /api/?(.*)
+            backend:
+              # from server-cluster-ip-service.yaml
+              serviceName: server-cluster-ip-service
+              servicePort: 5000
