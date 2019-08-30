@@ -1,0 +1,42 @@
+sudo: required
+services:
+  - docker
+
+env:
+  global:
+    # for GIT SHA to get the commit id to tag an image
+    - SHA=$(git rev-parse HEAD)
+
+
+before_install:
+  # encrypted service account file
+  # when this command runs, it decrypts the file and put it in the root project dir
+  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
+  # below two steps to setup Google cloud locally
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  # to manipulate kubernetes cluster
+  - gcloud components update kubectl
+  # login password for Google cloud
+  # service-account is equivalent to IAM 
+  - gcloud auth activate-service-account --key-file service-account.json
+  # project name in Google cloud
+  - gcloud config set project multi-k8s-251306
+  # compute zone in Google cloud
+  - gcloud config set compute/zone asia-south1-a
+  # cluster info
+  - gcloud container clusters get-credentials multi-cluster
+  # password for docker login
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # docker test
+  - docker build -t raghavn-aasaanjobs/react-test ./client/Dockerfile.dev
+
+script:
+  - docker run -e CI=true raghavn-aasaanjobs/react-test npm test
+
+deploy:
+  # to run the custom script file
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
