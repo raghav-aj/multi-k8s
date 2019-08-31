@@ -34,7 +34,7 @@ before_install:
   - docker build -t raghavn-aasaanjobs/react-test ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true raghavn-aasaanjobs/react-test npm test
+  - docker run -e CI=true raghavn-aasaanjobs/docker-react npm test
 
 deploy:
   # to run the custom script file
