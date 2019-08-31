@@ -1,7 +1,7 @@
 # building the images
-docker build -f raghavn-aasaanjobs/multi-client:latest -t raghavn-aasaanjobs/multi-client:$SHA -f ./client/Dockerfile ./client
-docker build -f raghavn-aasaanjobs/multi-server:latest -t raghavn-aasaanjobs.multi-server:$SHA -f ./server/Dockerfile ./server
-docker build -f raghavn-aasaanjobs/multi-worker:latest -t raghavn-aasaanjobs.multi-worker:$SHA -f ./worker/Dockerfile ./worker
+docker build -t raghavn-aasaanjobs/multi-client:latest -t raghavn-aasaanjobs/multi-client:$SHA -f ./client/Dockerfile ./client
+docker build -t raghavn-aasaanjobs/multi-server:latest -t raghavn-aasaanjobs.multi-server:$SHA -f ./server/Dockerfile ./server
+docker build -t raghavn-aasaanjobs/multi-worker:latest -t raghavn-aasaanjobs.multi-worker:$SHA -f ./worker/Dockerfile ./worker
 
 # we have already logged in to Docker hub through travis. so, no need to login again.
 # pushing the images to docker hub
