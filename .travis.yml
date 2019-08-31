@@ -6,6 +6,8 @@ env:
   global:
     # for GIT SHA to get the commit id to tag an image
     - SHA=$(git rev-parse HEAD)
+    # for Google cloud sdk; to disable the prompt which requires the user inputs
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
 
 before_install:
