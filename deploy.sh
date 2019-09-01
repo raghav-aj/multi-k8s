@@ -15,7 +15,7 @@ docker push raghavnayakaasaanjobs/multi-worker:latest
 docker push raghavnayakaasaanjobs/multi-worker:$SHA
 
 # running the kubernetes
-kutectl apply -f k8s
+kubectl apply -f k8s
 
 # imperatively set latest images on each deployment
 # server-deployment -> the name given in k8s/server-deployment.yaml
